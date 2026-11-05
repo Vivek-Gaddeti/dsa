@@ -1,0 +1,121 @@
+/* Calm theme: plain, minimal, clean. Loaded LAST, after style.css and fx/fx.css, and only changes tokens and a few rules.
+   Square corners, flat surfaces, 2px borders (quiet for containers, darker for things you can click), no glow, blur or soft shadows.
+   Colour is used for meaning only. To go back to the old look, remove the calm.css <link> from tools/pages.py and re-run it. */
+:root {
+  --bg: #faf7f2; --panel: #ffffff; --panel-2: #f3eee6;
+  --text: #1f1b17; --muted: #6a625a;
+  --border: #ddd5c9; --line-control: #8d8379;
+  --accent: #0e7c86; --accent-soft: #dcf0f1;
+  --green: #0b7a43; --green-soft: #d2f3df;
+  --amber: #8a5a00; --amber-soft: #fff0b8;
+  --red: #c21f4f; --red-soft: #fde0e8;
+  --purple: #5b3cc4; --purple-soft: #e8e0ff;
+  --code-bg: #f6f2ea; --hl: #ffe27a;
+  --node-stroke: #0e7c86;
+  --ink: #1f1b17;
+  --radius: 0; --r-xs: 0; --r-sm: 0; --r-md: 0; --r-pill: 0;
+  --shadow: none;
+  --sans: "Archivo", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --display: "Archivo", "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "Cascadia Code", "JetBrains Mono", Consolas, "SF Mono", Menlo, monospace;
+  --label: "Space Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+}
+[data-theme="dark"] {
+  --bg: #121212; --panel: #1b1b1b; --panel-2: #222222;
+  --text: #eeeae4; --muted: #aba69f;
+  --border: #3d3d3d; --line-control: #7a7a7a;
+  --accent: #5ccfd8; --accent-soft: #142a2c;
+  --green: #5bd98c; --green-soft: #183626;
+  --amber: #f2c94c; --amber-soft: #3a3014;
+  --red: #f48fb1; --red-soft: #3a1e25;
+  --purple: #b9a3f5; --purple-soft: #2a2342;
+  --code-bg: #171717; --hl: #5a4a10;
+  --node-stroke: #5ccfd8;
+  --ink: #eeeae4;
+}
+
+/* ---- reading comfort ---- */
+body { font-size: 16px; line-height: 1.65; font-family: var(--sans); }
+h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -.01em; }
+h1 { font-weight: 800; }
+h2, h3 { font-weight: 800; }
+::selection { background: #ffd23f; color: #1f1b17; }
+
+/* ---- labels and numbers get the mono face ---- */
+kbd, .stat .n, .stat b, .badge, .tag, .pill, .eyebrow, .k, th { font-family: var(--label); }
+th, .eyebrow { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+
+/* ---- flat surfaces, no glow, no blur ---- */
+.d-aurora { display: none !important; }
+.topbar, .topbar.scrolled { background: var(--panel); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; border-bottom: 2px solid var(--border); }
+.card, .panel, .box, details, .callout, .stat, .pop, .menu, .dash-pop, .psel-menu, .finder { box-shadow: none; }
+.card, details { border-width: 2px; }
+.dash-pop, .psel-menu, .finder, .menu { box-shadow: 4px 4px 0 var(--ink); border: 2px solid var(--ink); }   /* floating things get one hard shadow so they read as "on top" */
+:root[data-anim="on"] a.card:hover { transform: translateY(-1px); box-shadow: none; border-color: var(--ink); }
+:root[data-anim="on"] .d-top:hover, :root[data-anim="on"] .icon-btn:hover { box-shadow: none; }
+
+/* ---- things you can click have the darker border ---- */
+.btn, .icon-btn, input[type="text"], input[type="search"], select, textarea { border: 2px solid var(--line-control); background: var(--panel); }
+.btn:hover, .icon-btn:hover { background: var(--panel-2); border-color: var(--ink); }
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--ink); font-weight: 800; }
+[data-theme="dark"] .btn.primary { color: #0b1f21; }
+.btn.primary:hover { filter: none; background: color-mix(in srgb, var(--accent) 88%, var(--ink)); }
+.btn.on-green, .btn.on-amber, .btn.on-red { border: 2px solid currentColor; }
+input:focus, select:focus, textarea:focus { border-color: var(--ink); box-shadow: none; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ---- code, progress and the editor stay readable and square ---- */
+pre, code { border-radius: 0; }
+.ed, .try, .run { border-width: 2px; }
+
+/* ===== calm extras (pairs with calm.js) ===== */
+.hello { display: none; }                                   /* the greeting next to the logo was just noise while studying */
+.btn.quiet { border-color: var(--border); color: var(--muted); font-weight: 600; background: transparent; }
+.btn.quiet:hover { color: var(--text); border-color: var(--line-control); background: var(--panel-2); }
+.calm-extra { margin-left: auto; display: inline-flex; flex-wrap: wrap; gap: var(--sp-2); }
+.calm-size { display: inline-flex; gap: 0; }
+.calm-size .btn { font-family: var(--label); padding-inline: .7rem; }
+.calm-size .btn + .btn { border-left-width: 0; }
+.doc-actions { position: sticky; top: var(--top-h); z-index: 20; background: var(--bg); padding-block: var(--sp-2); border-block: 2px solid var(--border); align-items: center; }
+
+/* code blocks: Step through leads, the rest is quieter */
+.code-head .btn { border-color: var(--border); color: var(--muted); font-weight: 600; }
+.code-head .btn[data-step] { border-color: var(--ink); color: var(--text); font-weight: 800; }
+.code-head .btn[data-outmode] { border-color: transparent; background: transparent; font-size: var(--fs-xs); }
+
+/* dashboard: the year heatmap is folded away until asked for */
+.hm-sum { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; gap: var(--sp-2); list-style: none; }
+.hm-sum::-webkit-details-marker { display: none; }
+.hm-sum::after { content: "+"; margin-left: auto; font-family: var(--label); color: var(--muted); }
+details.hm[open] .hm-sum::after { content: "–"; }
+details.hm[open] .hm-sum { margin-bottom: var(--sp-3); }
+
+/* the problem timer is off until you switch it on */
+html[data-timer="off"] .nc-timer { display: none; }
+
+/* focus mode: only the lesson */
+body.focus-mode .topbar, body.focus-mode .sidebar, body.focus-mode .tabbar, body.focus-mode .d-resume { display: none !important; }
+body.focus-mode .layout { grid-template-columns: minmax(0, 1fr); }
+body.focus-mode .doc-actions { top: 0; }
+
+/* touch screens (tablets, pens): everything you tap is at least 44px */
+@media (pointer: coarse) {
+  .btn, .icon-btn, select, input[type="text"], input[type="search"], .nav a, .sidebar a, summary { min-height: 44px; }
+  .icon-btn { min-width: 44px; }
+  .btn.sm { min-height: 40px; }
+}
+
+/* bottom tab bar replaces the header links on tablets and phones */
+.tabbar { display: none; }
+@media (max-width: 900px) {
+  .topbar .nav { display: none; }
+  .topbar { gap: .5rem; }
+  .tabbar { position: fixed; inset: auto 0 0 0; z-index: 60; height: 72px; display: flex; background: var(--panel); border-top: 2px solid var(--line-control); }
+  .tabbar a { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text); font-size: 12px; font-weight: 700; text-decoration: none; }
+  .tabbar a .ni { width: 22px; height: 22px; }
+  .tabbar a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); border-top: 4px solid var(--accent); margin-top: -2px; }
+  body { padding-bottom: 72px; }
+  .sidebar { bottom: 72px; }
+  .toast { bottom: 5.5rem; }
+}
+@media (max-width: 420px) { .tabbar a span { font-size: 10.5px; } }

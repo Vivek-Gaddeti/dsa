@@ -1,0 +1,1 @@
+(window.TRACES=window.TRACES||{})["98a7976d"]={"steps":[{"l":1,"e":"l","s":["<module>"],"o":0,"g":{}},{"l":1,"e":"r","s":["<module>"],"o":16,"r":"None"},{"l":0,"e":"end","s":[],"o":16}],"out":"blue is sky the\n","truncated":false};
