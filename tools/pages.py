@@ -23,7 +23,7 @@ HEAD = '''<!doctype html>
 PAGE = '<main class="page" id="content"></main>\n'
 DOC = '<div class="layout">\n  <aside class="sidebar" id="sidebar"></aside>\n  <main class="content" id="content"></main>\n</div>\n'
 TAIL = ["assets/fx/fx-core.js", "assets/fx/fx-page.js", "assets/fx/fx-header.js", "assets/fx/fx-sidebar.js",
-        "assets/fx/fx-cursor.js", "assets/fx/fx-celebrate.js", "data/progress.js", "assets/find.js", "assets/search.js", "assets/calm.js"]
+        "assets/fx/fx-cursor.js", "assets/fx/fx-celebrate.js", "data/progress.js", "assets/find.js", "assets/search.js", "assets/calm.js", "assets/pad.js"]
 CODE = ["assets/glossary.js", "assets/viz.js"]
 
 def page(name, title, body, before, after, init):
@@ -52,4 +52,5 @@ page("python.html", "Python Guide · Study Hub", DOC, ["data/outmap.js"], CODE +
      'topbar("python.html");\n  DocPage({ sections: PY, kind: "py", title: "Python Complete Guide", noun: "Python topics", mascot: "snake" });')
 page("python-dsa.html", "Python for DSA · Study Hub", DOC, ["data/outmap.js"], CODE + ["data/briefs-py.js", "data/python-dsa.js"],
      'topbar("python-dsa.html");\n  DocPage({ sections: PYDSA, kind: "pydsa", title: "Python for DSA", noun: "DSA topics", mascot: "snake" });')
+page("quiz.html", "Which pattern? · Study Hub", PAGE, [], ["data/patterns.js", "data/patterns-2.js", "assets/quiz.js"], 'topbar("quiz.html");')
 print("pages written")

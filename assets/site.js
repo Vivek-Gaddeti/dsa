@@ -10,7 +10,10 @@ window.SITE = {
   links: [
     ["index.html", "Home"],
     ["topics.html", "Learn"],
-    ["patterns.html", "Patterns"],
+    ["patterns.html", "Patterns", [
+      ["patterns.html", "Pattern lessons", "How to spot and use each pattern"],
+      ["quiz.html", "Which pattern? quiz", "Practise recognising the pattern"],
+    ]],
     ["neetcode.html", "Practice"],
     ["python.html", "Python", [
       ["python.html", "Complete Guide", "The whole language, step by step"],

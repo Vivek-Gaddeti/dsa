@@ -69,7 +69,65 @@
     });
   }
 
-  const tick = () => { extras(); timerBtn(); };
+  /* ---- practice problems: a hint ladder (reveal the approach one step at a time) and a quick-jump outline ---- */
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function ladder() {
+    const c = $("#content"), solve = c && $(".solve-box", c);
+    if (!solve || solve.dataset.ladder) return;
+    const steps = $$("details.box", c).filter((d) => /^(Approach|Dry run|Code explained|Alternative)/i.test(d.querySelector("summary").textContent.trim()));
+    if (!steps.length) return;
+    solve.dataset.ladder = "1";
+    let n = 0;
+    const card = document.createElement("div");
+    card.className = "calm-ladder";
+    const name = (d) => d.querySelector("summary").textContent.trim();
+    const draw = () => {
+      card.innerHTML = n < steps.length
+        ? `<span class="eyebrow">Stuck? One step at a time</span><p>${n} of ${steps.length} steps revealed. Next: <strong>${esc(name(steps[n]))}</strong></p>
+           <div class="btn-row"><button type="button" class="btn primary" data-lad="next">Reveal next step</button><button type="button" class="btn quiet" data-lad="all">Show everything</button></div>`
+        : `<span class="eyebrow">All ${steps.length} steps revealed</span><p class="muted">Try covering them again next time and solving from memory.</p>`;
+    };
+    steps.forEach((d) => d.classList.add("calm-locked"));
+    steps[0].parentNode.insertBefore(card, steps[0]);
+    card.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-lad]"); if (!b) return;
+      const upto = b.dataset.lad === "all" ? steps.length : n + 1;
+      for (; n < upto; n++) { steps[n].classList.remove("calm-locked"); steps[n].open = true; }
+      draw();
+      if (b.dataset.lad === "next") steps[n - 1].scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    draw();
+  }
+  function outline() {
+    const c = $("#content"), bar = c && $(".doc-actions", c);
+    if (!bar || !$(".solve-box", c) || c.querySelector(".calm-outline")) return;
+    const find = (re) => $$("details.box", c).find((d) => re.test(d.querySelector("summary").textContent.trim()));
+    const items = [["Problem", $$("h2", c).find((h) => /^problem/i.test(h.textContent.trim()))], ["Hint", find(/^hint/i)], ["Try it", $(".solve-box", c)], ["Solution", $(".calm-ladder", c) || find(/^approach/i)], ["Notes", find(/^my notes/i)]].filter(([, el]) => el);
+    const nav = document.createElement("nav");
+    nav.className = "calm-outline"; nav.setAttribute("aria-label", "On this page");
+    nav.innerHTML = `<span class="eyebrow">On this page</span>` + items.map(([t], i) => `<button type="button" class="btn quiet" data-jump="${i}">${t}</button>`).join("") + `<button type="button" class="btn quiet" data-open-pad>Scratch pad</button>`;
+    nav.addEventListener("click", (e) => { const b = e.target.closest("[data-jump]"); if (b) items[+b.dataset.jump][1].scrollIntoView({ behavior: "smooth", block: "start" }); });
+    bar.after(nav);
+  }
+
+  /* ---- lessons: a short "check yourself" before the next/previous links ---- */
+  function recall() {
+    const nav = $("#content .page-nav");
+    if (!nav || nav.dataset.recall || $("#content .solve-box")) return;
+    nav.dataset.recall = "1";
+    const brief = $("#content .callout.brief"), tags = $$("#content .badge").map((b) => b.textContent.trim()).filter(Boolean);
+    if (!brief && !tags.length) return;
+    const text = brief ? brief.innerText.split("\n").slice(1).join(" ").replace(/\s+/g, " ").trim() : "";
+    const q = [];
+    if (text) q.push(["Without scrolling up, say what this is in one sentence.", text]);
+    if (tags.length) q.push(["What does it cost in time and space?", tags.join(" · ")]);
+    const box = document.createElement("section");
+    box.className = "calm-recall";
+    box.innerHTML = `<h2>Check yourself</h2>` + q.map(([a, b], i) => `<div class="calm-q"><span class="eyebrow">Question ${i + 1} of ${q.length}</span><p>${esc(a)}</p><details><summary class="btn">Show answer</summary><p>${esc(b)}</p></details></div>`).join("");
+    nav.parentNode.insertBefore(box, nav);
+  }
+
+  const tick = () => { extras(); timerBtn(); ladder(); outline(); recall(); };
   tabbar(); tick();
   new MutationObserver(tick).observe(document.body, { childList: true, subtree: true });
 })();
